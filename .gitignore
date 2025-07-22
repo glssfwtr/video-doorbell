@@ -20,7 +20,6 @@ __pycache__/
 *.swo
 *.swp
 *.tmp
-/yolov5/
 build/
 data/images/
 data/scripts/download_weights.sh
