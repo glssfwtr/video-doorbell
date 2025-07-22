@@ -63,7 +63,7 @@ pip install ultralytics python-dotenv google-api-python-client
   Once everything is up and running from the dry run, feel free to package everything into a single launcher through something like bash scripts.
 
 ## Workflow
-![workflow_diagram](.\docs\video_doorbell_workflow_diagram.png)
+![Workflow Diagram](docs/video_doorbell_workflow_diagram.png)
 
 
 ## Usage
