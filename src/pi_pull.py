@@ -1,32 +1,32 @@
-import zmq
 import base64
-import datetime
+import threading
+import zmq
 
 context = zmq.Context()
 socket = context.socket(zmq.PULL)
-socket.bind("tcp://0.0.0.0:5555")
+socket.bind("tcp://127.0.0.1:5555")
 
-def save_clip(data, filename):
+def SaveClip(data, filename):
     with open(filename, "wb") as f:
         f.write(base64.b64decode(data))
-    print(f"Saved to {filename}")
 
-def run_inference(filename):
-    # Stub: always return True for testing
-    print(f"Running inference on {filename}")
+def RunLocalInference(filename):
+    # placeholder for local inference logic if needed to process before sending to backend
     return True
 
-def detect_person(filename):
-    # Use AI chip logic to detect person
-    return run_inference(filename)  # your detection function
-
-while True:
-    filename_bytes, clip_data = socket.recv_multipart()
+def ProcessClip(filename_bytes, clip_data):
     filename = filename_bytes.decode()
-    save_clip(clip_data, filename)
-
-    if run_inference(filename):
+    SaveClip(clip_data, filename)
+    if RunLocalInference(filename):
         print(f"Person detected in {filename}, saving/forwarding")
-        # TODO: Save to disk permanently or forward to backend
+        # TODO: save to disk permanently or forward to backend
     else:
         print(f"No person detected in {filename}, discarding")
+
+def main():
+    while True:
+        filename_bytes, clip_data = socket.recv_multipart()
+        threading.Thread(target=ProcessClip, args=(filename_bytes, clip_data), daemon=True).start()
+
+if __name__ == "__main__":
+    main()
